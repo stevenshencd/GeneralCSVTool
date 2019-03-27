@@ -49,10 +49,10 @@ class CSVResolver():
             else:
                 break
 
-    def get_column_with_filter(self,col_index, filter_index, filter_content):
+    def get_column_equals_content(self,col_index, filter_index, filter_content):
         self.fp.seek(0)
         reader = csv.reader(self.fp)
-        return [row[col_index] for row in reader]
+        return [row[col_index] for row in reader if row[filter_index] == filter_content]
 
     def get_rows_by_timeline(self,mode,filter_column_index,timeline):
         self.fp.seek(0)
@@ -77,10 +77,21 @@ class CSVResolver():
         else:
             return rows_after
 
+    def get_rows_by_filter(self,filter):
+        self.fp.seek(0)
+        reader = csv.reader(self.fp)
+        rows = []
+        for row in reader:
+            if filter(row) == 0:
+                rows.append(row)
+        return rows
+
 if __name__ == '__main__':
     # debug code
     print "run..."
     resolver = CSVResolver("debug/instance_all.csv")
-    print resolver.get_header()
-    print resolver.get_rows_by_timeline("Before",8,"2019/3/2")
+    def filter_age(row):
+        return 0
+    print resolver.get_rows_by_filter(filter_age)
+
 
