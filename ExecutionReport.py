@@ -24,13 +24,20 @@ def clean():
 def extract_all_run_instance(root_folder):
     print "if over 5, then only get last 5 instances"
 
-def inquiry_recent_instances(name,max_count,collection):
-    #inquiry each test case recent run instances in current PSI, pass rate, latest status, last execution data, note
-
-
 def generate_report(rows):
     print "generate report"
     report_name = "report_{date}".format(date=time.strftime("%Y/%m/%d"))
+
+def filter_timeline_after(row):
+    str_date = str(row[3]).split(" ")[0]
+    try:
+        executed_date = datetime.datetime.strptime(str_date, '%Y/%m/%d').date()
+    except Exception:
+        print ""
+    if executed_date >= datetime.datetime.strptime("2019/3/20", '%Y/%m/%d').date():
+        return 0
+    else:
+        return -1
 
 def main():
     if len(sys.argv) < 2 & False:
@@ -43,14 +50,8 @@ def main():
         resolver = CSVResolver("temp_data" + os.sep + "all_instances_{date}".format(date=time.strftime("%Y/%m/%d")))
     except Exception:
         print Exception
-    new_run_instances = resolver.get_rows_by_timeline("2019/3/20")
-    inquiry_recent_instances("name",5,new_run_instances)
-    rows = [["Itag", "Category", "TestName", "Status", "Last_5_Pass_Rate", "Latest_Execution_Date","Note"]]
-    for test in regression_set:
-        print test
 
-    for test in ctag_set:
-        print "ctag"
+    rows = [["Itag", "Category", "TestName", "Status", "Last_5_Pass_Rate", "Latest_Execution_Date","Note"]]
 
     print "done"
 

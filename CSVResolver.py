@@ -54,29 +54,6 @@ class CSVResolver():
         reader = csv.reader(self.fp)
         return [row[col_index] for row in reader if row[filter_index] == filter_content]
 
-    def get_rows_by_timeline(self,mode,filter_column_index,timeline):
-        self.fp.seek(0)
-        reader = csv.reader(self.fp)
-        rows_before = []
-        rows_after = []
-        i = 0
-        for row in reader:
-            if i > 0:
-                str_date = str(row[filter_column_index]).split(" ")[0]
-                try:
-                    executed_date = datetime.datetime.strptime(str_date,'%Y/%m/%d').date()
-                    if datetime.datetime.strptime(timeline,'%Y/%m/%d').date() > executed_date:
-                        rows_before.append(row)
-                    else:
-                        rows_after.append(row)
-                except:
-                    continue
-            i += 1
-        if mode.lower() == "before":
-            return rows_before
-        else:
-            return rows_after
-
     def get_rows_by_filter(self,filter):
         self.fp.seek(0)
         reader = csv.reader(self.fp)
