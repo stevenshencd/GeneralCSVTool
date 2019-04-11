@@ -34,7 +34,7 @@ class CSVResolver():
             if i == row:
                 return line[col]
 
-    def get_column_unique_values(self, index):
+    def get_column_in_unique_value(self, index):
         self.fp.seek(0)
         reader = csv.reader(self.fp)
         return list(set(self.get_column(index)))
@@ -63,12 +63,20 @@ class CSVResolver():
                 rows.append(row)
         return rows
 
+    def write_to_file(self,filename,csv_rows):
+        print "write..."
+
+
 if __name__ == '__main__':
     # debug code
     print "run..."
     resolver = CSVResolver("debug/instance_all.csv")
-    def filter_age(row):
-        return 0
-    print resolver.get_rows_by_filter(filter_age)
+    def filter_Itag(row):
+        if row[0] == "I54":
+            return 0
+        else:
+            return -1
+
+    print resolver.get_rows_by_filter(filter_Itag)
 
 
